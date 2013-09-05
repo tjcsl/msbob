@@ -2,13 +2,21 @@
 <html>
 <head>
 	<title>ms bob</title>
+	
 	<style type='text/css'>
+template {
+	display: none;
+}
 .p {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
+}
+
+.h {
+	display: none;
 }
 
 .login {
@@ -24,6 +32,7 @@
 	margin-left: -119px;
 	margin-top: -154px;
 	background: url(knob.png);
+	cursor: pointer;
 }
 
 .dog {
@@ -47,9 +56,23 @@
 	background: url(bubble-sm.png);
 }
 
-.bubble .msg {
+.bubble.sm .msg {
 	padding-left: 16px;
 	padding-top: 3px;
+}
+
+.bubble.login {
+	height: 300px;
+	width: 300px;
+	background: url(bubble-login.png);
+}
+
+.bubble.login .msg {
+	padding-left: 70px;
+	padding-top: 3px;
+}
+
+.bubble .msg {
 	width: 130px;
 	font-size: 14px;
 }
@@ -59,7 +82,60 @@
 }
 
 	</style>
+	<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+	<template id='auth'>
+		<form class='authform' onsubmit='return false;'>
+			<span class='part1'>
+				<b>Who is it?</b><br />
+				To sign in, type your name..<br />
 
+				Username: <input name='user' /><br />
+				<button class='part1b'>OK</button>
+			</span>
+			<span class='part2 h'>
+				<b>Hey, what's the password?</b><br />
+				Password: <input type='password' name='pass' /><br />
+				<button class='part2b'>OK</button>
+			</span>
+		</form>
+	</template>
+	<script type='text/javascript'>
+	$(function() {
+		resource = {
+			'login1': '<b>Good afternoon.</b><br />Click on the door to sign in..'
+		};
+		msg = function(text, size) {
+			$('.bubble').attr('class', 'bubble '+size);
+			$('.bubble .msg').html(text);
+		};
+		rsc = function(name) {
+			scr = $('template#'+name);
+			if(scr.length > 0) return scr.html();
+			return resource[name];
+		};
+
+		form_auth = function(user, pass) {
+			if(true) {
+				location.href = 'main.html';
+			}
+		}
+	});
+
+	$(function() {
+		$('.knob').click(function() {
+			msg(rsc('auth'), 'login');
+			
+			$('.authform .part1b').click(function() {
+				$('.part1, .part2').toggle();
+			});
+			$('.authform .part2b').click(function() {
+				form_auth($('.authform input[name=user]').val(), $('.authform input[name=pass]').val());
+			});
+		});
+
+		msg(rsc('login1'), 'sm');
+	});
+	</script>
 </head>
 <body>
 	<div class='p login'>
@@ -70,8 +146,7 @@
 	</div>
 	<div class='bubble sm'>
 		<div class='msg'>
-			<b>Good afternoon.</b><br />
-			Click on the door to sign in..
+			
 		</div>
 	</div>
 
